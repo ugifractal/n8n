@@ -1,0 +1,9 @@
+# Secrets — this repo is public, never commit credentials.
+.kamal/secrets
+.env
+.env.*
+
+# Kamal accessory data (Postgres) lives on the host, not in the repo.
+data/
+
+.DS_Store

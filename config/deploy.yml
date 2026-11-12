@@ -1,0 +1,77 @@
+# n8n centralized workflow automation
+service: n8n
+
+image: ugifractal/n8n
+
+servers:
+  web:
+    - drx.catfish-algol.ts.net
+
+ssh:
+  user: sugiarto
+
+deploy_timeout: 180
+
+proxy:
+  ssl: false
+  app_port: 5678
+  healthcheck:
+    path: /healthz
+    interval: 10
+    timeout: 5
+  hosts:
+    - n8n.duruxignition.com
+
+registry:
+  server: ghcr.io
+  username: ugifractal
+  password:
+    - GHCR_TOKEN
+
+env:
+  clear:
+    DB_TYPE: postgresdb
+    DB_POSTGRESDB_HOST: n8n-db
+    DB_POSTGRESDB_PORT: 5432
+    DB_POSTGRESDB_DATABASE: n8n_production
+    DB_POSTGRESDB_USER: n8n
+    N8N_HOST: n8n.duruxignition.com
+    N8N_PORT: 5678
+    N8N_PROTOCOL: https
+    N8N_EDITOR_BASE_URL: https://n8n.duruxignition.com/
+    N8N_WEBHOOK_URL: https://n8n.duruxignition.com/
+    N8N_PROXY_HOPS: 1
+    N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+    N8N_RUNNERS_ENABLED: "true"
+    N8N_SECURE_COOKIE: "true"
+    N8N_DIAGNOSTICS_ENABLED: "false"
+    GENERIC_TIMEZONE: Asia/Jakarta
+    TZ: Asia/Jakarta
+
+  secret:
+    - DB_POSTGRESDB_PASSWORD
+    - N8N_ENCRYPTION_KEY
+
+volumes:
+  - "n8n_data:/home/node/.n8n"
+
+builder:
+  arch: amd64
+
+accessories:
+  db:
+    image: postgres:16
+    host: drx.catfish-algol.ts.net
+    env:
+      clear:
+        POSTGRES_USER: n8n
+        POSTGRES_DB: n8n_production
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data/postgres-16-n8n:/var/lib/postgresql/data
+
+aliases:
+  logs: app logs -f
+  shell: app exec --interactive --reuse "sh"
+  db: accessory exec db "psql -U n8n -d n8n_production"
