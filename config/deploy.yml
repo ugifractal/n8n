@@ -45,6 +45,10 @@ env:
     N8N_RUNNERS_ENABLED: "true"
     N8N_SECURE_COOKIE: "true"
     N8N_DIAGNOSTICS_ENABLED: "false"
+    # Explicit values to silence n8n's future-default deprecation warnings.
+    # Flip BLOCK_ENV_ACCESS to "true" if Code nodes never read process.env.
+    N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+    N8N_GIT_NODE_DISABLE_BARE_REPOS: "true"
     GENERIC_TIMEZONE: Asia/Jakarta
     TZ: Asia/Jakarta
 
