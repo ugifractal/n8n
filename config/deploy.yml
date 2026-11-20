@@ -49,12 +49,20 @@ env:
     # Flip BLOCK_ENV_ACCESS to "true" if Code nodes never read process.env.
     N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
     N8N_GIT_NODE_DISABLE_BARE_REPOS: "true"
+    # Password reset / notification emails (Zoho SMTP, reused from carhist).
+    N8N_SMTP_HOST: smtp.zoho.com
+    N8N_SMTP_PORT: 587
+    N8N_SMTP_USER: admin@duruxignition.com
+    N8N_SMTP_SENDER: admin@duruxignition.com
+    N8N_SMTP_SSL: "false"
+    N8N_SMTP_STARTTLS: "true"
     GENERIC_TIMEZONE: Asia/Jakarta
     TZ: Asia/Jakarta
 
   secret:
     - DB_POSTGRESDB_PASSWORD
     - N8N_ENCRYPTION_KEY
+    - N8N_SMTP_PASS
 
 volumes:
   - "n8n_data:/home/node/.n8n"
